@@ -60,7 +60,7 @@ public class Game {
 
         settingsButton.addActionListener(e -> {
             settingsButton.setBackground(null);
-            Settings settings = new Settings(width / 2, height / 2);
+            Settings settings = new Settings(width / 2, height / 2, game);
         });
             
         // Панель для кнопки

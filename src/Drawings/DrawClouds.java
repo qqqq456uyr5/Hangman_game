@@ -15,6 +15,18 @@ public class DrawClouds extends JPanel {
     g2d.drawArc(cloudX + 95, cloudY + 25, 35, 30, 0, -180);
     g2d.drawArc(cloudX + 140, cloudY + 25, 35, 30, 0, -180);
     }
+
+    public void drawSmalClouds(int cloudX, int cloudY, Graphics2D g2d){
+    g2d.setStroke(new BasicStroke(3));
+    g2d.drawArc(cloudX + 53,  cloudY + 10,  30, 33, 0, 180);
+    g2d.drawArc(cloudX + 73,  cloudY,       33, 33, 0, 180);
+    g2d.drawArc(cloudX + 97,  cloudY + 3,   30, 30, 0, 180);
+    g2d.drawArc(cloudX + 117, cloudY + 10,  27, 33, 0, 180);
+    g2d.drawLine(cloudX + 53, cloudY + 27,  cloudX + 144, cloudY + 27);
+    g2d.drawArc(cloudX + 63,  cloudY + 17,  23, 20, 0, -180);
+    g2d.drawArc(cloudX + 93,  cloudY + 17,  23, 20, 0, -180);
+}
+
     
     
 }

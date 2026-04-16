@@ -5,7 +5,9 @@ import javax.swing.JPanel;
 
 public class StartLogo extends JPanel {
 
-    DrawClouds draw = new DrawClouds();
+    DrawClouds drawCloud = new DrawClouds();
+
+    DrawGallows drawGallow = new DrawGallows();
     
     /** Ширина окна*/
     private final int width; 
@@ -38,32 +40,32 @@ public class StartLogo extends JPanel {
 
         
 
-        draw.drawClouds(50, 10, g2d);
-        draw.drawClouds(500, 100, g2d);
-        draw.drawClouds(-50, 80, g2d);
-        drawGallows(-20, 250, g2d);
+        drawCloud.drawClouds(50, 10, g2d);
+        drawCloud.drawClouds(500, 100, g2d);
+        drawCloud.drawClouds(-50, 80, g2d);
+        drawGallow.drawGallows(-20, 250, g2d);
+
+
+        int sunX = 300;  
+        int sunY = 120;          
+        int sunSize = 60;       
+
+        g2d.setColor(Color.BLACK);
+        g2d.fillOval(sunX, sunY, sunSize, sunSize);
+
+
+        g2d.setColor(Color.BLACK);
+        g2d.setStroke(new BasicStroke(3));
+        for(int i = 0; i < 12; i++) {
+            double angle = Math.toRadians(i * 30);
+            int x1 = (int)(sunX + sunSize/2 + Math.cos(angle) * (sunSize/2 + 10));
+            int y1 = (int)(sunY + sunSize/2 + Math.sin(angle) * (sunSize/2 + 10));
+            int x2 = (int)(sunX + sunSize/2 + Math.cos(angle) * (sunSize/2 + 25));
+            int y2 = (int)(sunY + sunSize/2 + Math.sin(angle) * (sunSize/2 + 25));
+            g2d.drawLine(x1, y1, x2, y2);
+        }
     }
 
   
-    public void drawGallows(int x, int y, Graphics2D g2d){
-        g2d.setStroke(new BasicStroke(4));
-        g2d.setColor(Color.BLACK);
-
-        // Основание
-        g2d.drawLine(x + 50, y + 150, x + 150, y + 150);
-
-        // Вертикальная стойка
-        g2d.drawLine(x + 100, y + 150, x + 100, y);
-
-        // Верхняя перекладина
-        g2d.drawLine(x + 100, y, x + 180, y);
-
-        // Наклонная подпорка
-        g2d.drawLine(x + 70, y + 150, x + 100, y + 100);
-
-        // Веревка
-        g2d.setStroke(new BasicStroke(2));
-        g2d.drawLine(x + 178, y, x + 178, y + 25);
-        g2d.drawOval(x + 168, y + 25, 20, 20);
-    }
 }
+    
