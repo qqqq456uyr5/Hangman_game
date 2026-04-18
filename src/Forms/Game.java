@@ -5,6 +5,7 @@ import Drawings.DrawAlphabet;
 import Drawings.DrawCategory;
 import Drawings.DrawLinesForLetters;
 import Drawings.DrawRedLines;
+import GamePlay.FindLettersInWord;
 import GamePlay.ReadFromDictionary;
 import java.awt.Color;
 import java.awt.Cursor;
@@ -13,6 +14,7 @@ import java.awt.Point;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.net.URL;
+import java.util.*;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -21,9 +23,14 @@ import javax.swing.JLayeredPane;
 public class Game {
 
     ReadFromDictionary readFromDictionary = new ReadFromDictionary();
+    FindLettersInWord findLettersInWord = new FindLettersInWord(readFromDictionary.getWorldLetter());
 
     private final int width;
     private final int height;
+    private int startX = 60;  
+    private int cellWidth = 40;        
+    private int cellHeight = 30;  
+    private int size = 16;
 
     public Game(int width, int height){
         this.width = width;
@@ -58,7 +65,7 @@ public class Game {
         layeredPane.add(drawCategory, Integer.valueOf(2));  // слой 2
 
         //Алфавит
-        DrawAlphabet drawAlphabet = new DrawAlphabet(width, height);
+        DrawAlphabet drawAlphabet = new DrawAlphabet(width, height, startX, cellWidth, cellHeight, size);
         drawAlphabet.setBounds(0, 0, width, height);
         drawAlphabet.setOpaque(false);
         layeredPane.add(drawAlphabet, Integer.valueOf(3));  // слой 3
@@ -96,38 +103,30 @@ public class Game {
 
         layeredPane.add(settingsButton, Integer.valueOf(4));  // слой 4
 
-        // ОБРАБОТЧИК НА КЛАВИШУ E
+
+
         game.addKeyListener(new KeyAdapter() {
-            @Override
-            public void keyPressed(KeyEvent e) {
-                if (e.getKeyCode() == KeyEvent.VK_E) {
-                    Point pos = drawAlphabet.findLetter('У');
-                    int row = pos.x;
-                    int col = pos.y;
-                    DrawRedLines drawRedLines = new DrawRedLines(row, col);
+        @Override
+        public void keyPressed(KeyEvent e) {
+            char keyChar = e.getKeyChar();
+            char russianLetter = Character.toUpperCase(keyChar);
+        
+            if ((russianLetter >= 'А' && russianLetter <= 'Я') || russianLetter == 'Ё') {
+                Point pos = drawAlphabet.findLetter(russianLetter);
+                if (pos != null) {
+
+                    List<Integer> positions = findLettersInWord.findLetter(russianLetter);
+                    for(int index : positions){
+                        
+                    }
+                    DrawRedLines drawRedLines = new DrawRedLines(pos.x, pos.y, width, height, startX, cellWidth, cellHeight, size);
                     drawRedLines.setBounds(0, 0, width, height);
                     drawRedLines.setOpaque(false);
-                    layeredPane.add(drawRedLines, Integer.valueOf(4));  // слой 4
-
+                    layeredPane.add(drawRedLines, Integer.valueOf(4));
+                    layeredPane.repaint();
                 }
             }
-        });
-
-        // ОБРАБОТЧИК НА КЛАВИШУ W
-        game.addKeyListener(new KeyAdapter() {
-            @Override
-            public void keyPressed(KeyEvent w) {
-                if (w.getKeyCode() == KeyEvent.VK_W) {
-                    Point pos = drawAlphabet.findLetter('Ц');
-                    int row = pos.x;
-                    int col = pos.y;
-                    DrawRedLines drawRedLines = new DrawRedLines(row, col);
-                    drawRedLines.setBounds(0, 0, width, height);
-                    drawRedLines.setOpaque(false);
-                    layeredPane.add(drawRedLines, Integer.valueOf(4));  // слой 4
-
-                }
-            }
+        }
         });
 
         game.setFocusable(true);

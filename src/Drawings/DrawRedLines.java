@@ -7,20 +7,29 @@ public class DrawRedLines extends JPanel {
 
     private int row; 
 
-
     private int col;
 
+    private int width;
+    private int height;
 
 
-    private int startX = 60;  
-    private int startY = 385;  
-    private int cellWidth = 40;        
-    private int cellHeight = 30;   
+    private int startX;  
+    private int startY;  
+    private int cellWidth;        
+    private int cellHeight;   
+    private int size;   
 
 
-    public DrawRedLines(int row, int col) {
+    public DrawRedLines(int row, int col, int width, int height, int startX, int cellWidth,  int cellHeight, int size) {
+        this.width = width;
+        this.height = height;
         this.row = row;
         this.col = col;
+        this.cellHeight = cellHeight;
+        this.cellWidth = cellWidth;
+        this.startX = startX;
+        this.size = size;
+        startY = height - 100;  
 
         setOpaque(false);
     }
@@ -34,7 +43,7 @@ public class DrawRedLines extends JPanel {
         int x = startX + col * cellWidth;
         int y = startY + row * cellHeight;
 
-        g2d.drawLine(x, y, x + 16, y + 16);
-        g2d.drawLine(x, y + 16, x + 16, y);
+        g2d.drawLine(x - 5, y + 5, x + size, y - size);
+        g2d.drawLine(x - 5, y - size, x + size, y + 5);
     }
 }

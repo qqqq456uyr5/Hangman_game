@@ -8,11 +8,11 @@ public class DrawAlphabet extends JPanel {
 
     private int width;
     private int height;
-    private int startX = 60;  
+    private int startX;  
     private int startY;  
-    private int cellWidth = 40;        
-    private int cellHeight = 30;   
-    private int size = 16;
+    private int cellWidth;        
+    private int cellHeight;   
+    private int size;   
 
 
     // Двухмерный массив русских букв (2 ряда)
@@ -21,9 +21,13 @@ public class DrawAlphabet extends JPanel {
         {'Р', 'С', 'Т', 'У', 'Ф', 'Х', 'Ц', 'Ч', 'Ш', 'Щ', 'Ъ', 'Ы', 'Ь', 'Э', 'Ю', 'Я', '\0'}
     };
 
-    public DrawAlphabet(int width, int height) {
+    public DrawAlphabet(int width, int height, int startX,int cellWidth,int cellHeight, int size) {
         this.width = width;
         this.height = height;
+        this.cellHeight = cellHeight;
+        this.cellWidth = cellWidth;
+        this.startX = startX;
+        this.size = size;
         startY = height - 100;  
 
         setOpaque(false);
