@@ -5,7 +5,7 @@ import javax.swing.JPanel;
 
 public class DrawLinesForLetters extends JPanel {
 
-    /** Ширина окна в пикселях */
+    /** кол-во линий */
     private int quantity;
 
     /** Ширина окна в пикселях */

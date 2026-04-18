@@ -64,6 +64,8 @@ public class Settings {
         });
         continueButton.addActionListener(e -> {
             settings.dispose();
+            game.requestFocus();
+            game.setFocusable(true);
         });
 
         // Кнопка "ВЫЙТИ В МЕНЮ"

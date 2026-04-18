@@ -3,6 +3,7 @@ package Forms;
 import Drawings.BackgroundGameForm;
 import Drawings.DrawAlphabet;
 import Drawings.DrawCategory;
+import Drawings.DrawLetters;
 import Drawings.DrawLinesForLetters;
 import Drawings.DrawRedLines;
 import GamePlay.FindLettersInWord;
@@ -24,6 +25,7 @@ public class Game {
 
     ReadFromDictionary readFromDictionary = new ReadFromDictionary();
     FindLettersInWord findLettersInWord = new FindLettersInWord(readFromDictionary.getWorldLetter());
+    
 
     private final int width;
     private final int height;
@@ -31,6 +33,8 @@ public class Game {
     private int cellWidth = 40;        
     private int cellHeight = 30;  
     private int size = 16;
+
+
 
     public Game(int width, int height){
         this.width = width;
@@ -116,10 +120,15 @@ public class Game {
                 if (pos != null) {
 
                     List<Integer> positions = findLettersInWord.findLetter(russianLetter);
-                    for(int index : positions){
-                        
-                    }
+
+                    DrawLetters drawLetters = new DrawLetters(width, height, readFromDictionary.getWorldLetter(), russianLetter, positions);
+                    
                     DrawRedLines drawRedLines = new DrawRedLines(pos.x, pos.y, width, height, startX, cellWidth, cellHeight, size);
+                   
+                    drawLetters.setBounds(0, 0, width, height);
+                    drawLetters.setOpaque(false);
+                    layeredPane.add(drawLetters, Integer.valueOf(5));
+
                     drawRedLines.setBounds(0, 0, width, height);
                     drawRedLines.setOpaque(false);
                     layeredPane.add(drawRedLines, Integer.valueOf(4));
