@@ -6,6 +6,7 @@ import Drawings.DrawCategory;
 import Drawings.DrawLetters;
 import Drawings.DrawLinesForLetters;
 import Drawings.DrawRedLines;
+import GamePlay.BoolToFinish;
 import GamePlay.FindLettersInWord;
 import GamePlay.ReadFromDictionary;
 import java.awt.Color;
@@ -25,6 +26,7 @@ public class Game {
 
     ReadFromDictionary readFromDictionary = new ReadFromDictionary();
     FindLettersInWord findLettersInWord = new FindLettersInWord(readFromDictionary.getWorldLetter());
+    BoolToFinish boolToFinish = new BoolToFinish(readFromDictionary.getWorldLetter());
     
 
     private final int width;
@@ -33,6 +35,7 @@ public class Game {
     private int cellWidth = 40;        
     private int cellHeight = 30;  
     private int size = 16;
+    private int attempt = 0;
 
 
 
@@ -112,6 +115,10 @@ public class Game {
         game.addKeyListener(new KeyAdapter() {
         @Override
         public void keyPressed(KeyEvent e) {
+            if(attempt >= 5){
+                FinishLose finishLose = new FinishLose(width, height);
+                game.dispose();
+            }
             char keyChar = e.getKeyChar();
             char russianLetter = Character.toUpperCase(keyChar);
         
@@ -122,6 +129,11 @@ public class Game {
                     List<Integer> positions = findLettersInWord.findLetter(russianLetter);
 
                     DrawLetters drawLetters = new DrawLetters(width, height, readFromDictionary.getWorldLetter(), russianLetter, positions);
+                    if(positions.isEmpty()) {
+                        attempt++;
+                    }
+                    
+                    boolToFinish.addToBoolIsFinish(positions);
                     
                     DrawRedLines drawRedLines = new DrawRedLines(pos.x, pos.y, width, height, startX, cellWidth, cellHeight, size);
                    
@@ -133,6 +145,12 @@ public class Game {
                     drawRedLines.setOpaque(false);
                     layeredPane.add(drawRedLines, Integer.valueOf(4));
                     layeredPane.repaint();
+
+                    if(boolToFinish.isFinish()){
+                        FinishVictory finishVictory = new FinishVictory(width, height);
+                        game.dispose();
+                    }
+
                 }
             }
         }

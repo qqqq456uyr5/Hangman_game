@@ -46,7 +46,7 @@ public class DrawLetters extends JPanel {
             if (pos >= 0 && pos < quantity) {  
                 int x = startX + pos * (lineLength + spacing);
   
-                int textX = x + lineLength/2 - 10;  // -10 для центрирования
+                int textX = x + lineLength/2 - 10;
                 g2d.drawString(String.valueOf(letter), textX, textY);
             }
         }
