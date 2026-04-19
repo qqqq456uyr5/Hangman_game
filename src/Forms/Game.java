@@ -11,13 +11,11 @@ import GamePlay.FindLettersInWord;
 import GamePlay.ReadFromDictionary;
 import java.awt.Color;
 import java.awt.Cursor;
-import java.awt.Image;
+import java.awt.Font;
 import java.awt.Point;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
-import java.net.URL;
 import java.util.*;
-import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLayeredPane;
@@ -78,13 +76,8 @@ public class Game {
         layeredPane.add(drawAlphabet, Integer.valueOf(3));  // слой 3
 
         // Кнопка настроек
-        JButton settingsButton = new JButton();
-        URL imageUrl = getClass().getResource("/Resources/Settings.png");
-        if (imageUrl != null) {
-            ImageIcon icon = new ImageIcon(imageUrl);
-            Image scaledImage = icon.getImage().getScaledInstance(50, 50, Image.SCALE_AREA_AVERAGING);
-            settingsButton.setIcon(new ImageIcon(scaledImage));
-        }
+        JButton settingsButton = new JButton("⚙️");
+        settingsButton.setFont(new Font("Segoe UI", Font.PLAIN, 30));
 
         settingsButton.setBorder(null);
         settingsButton.setContentAreaFilled(false);
