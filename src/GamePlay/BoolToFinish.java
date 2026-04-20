@@ -3,7 +3,7 @@ package GamePlay;
 import java.util.List;
 
 public class BoolToFinish {
-    private boolean[] boolArray;
+    public boolean[] boolArray;
 
     public BoolToFinish(char[] letters){
         boolArray = new boolean[letters.length];

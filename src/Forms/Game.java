@@ -2,21 +2,19 @@ package Forms;
 
 import Drawings.BackgroundGameForm;
 import Drawings.DrawAlphabet;
+import Drawings.DrawBulbForButton;
 import Drawings.DrawCategory;
 import Drawings.DrawLetters;
 import Drawings.DrawLinesForLetters;
+import Drawings.DrawLogoSettings;
 import Drawings.DrawRedLines;
 import GamePlay.BoolToFinish;
 import GamePlay.FindLettersInWord;
 import GamePlay.ReadFromDictionary;
-import java.awt.Color;
-import java.awt.Cursor;
-import java.awt.Font;
 import java.awt.Point;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.util.*;
-import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLayeredPane;
 
@@ -34,8 +32,7 @@ public class Game {
     private int cellHeight = 30;  
     private int size = 16;
     private int attempt = 0;
-
-
+    private int attemptСlue = 0;
 
     public Game(int width, int height){
         this.width = width;
@@ -55,103 +52,136 @@ public class Game {
         BackgroundGameForm backgroundPanel = new BackgroundGameForm();
         backgroundPanel.setBounds(0, 0, width, height);
         backgroundPanel.setOpaque(true);
-        layeredPane.add(backgroundPanel, Integer.valueOf(0));  // слой 0
+        layeredPane.add(backgroundPanel, Integer.valueOf(0));
 
-        //Чёрточки)
+        //Чёрточки
         DrawLinesForLetters drawLinesForLetters = new DrawLinesForLetters(width, height, readFromDictionary.getWorldLetter());
         drawLinesForLetters.setBounds(0, 0, width, height);
         drawLinesForLetters.setOpaque(false);
-        layeredPane.add(drawLinesForLetters, Integer.valueOf(1));  // слой 1
+        layeredPane.add(drawLinesForLetters, Integer.valueOf(1));
 
         //Название категории
         DrawCategory drawCategory = new DrawCategory(width, height, readFromDictionary.getCategory());
         drawCategory.setBounds(0, 0, width, height);
         drawCategory.setOpaque(false);
-        layeredPane.add(drawCategory, Integer.valueOf(2));  // слой 2
+        layeredPane.add(drawCategory, Integer.valueOf(2));
 
         //Алфавит
         DrawAlphabet drawAlphabet = new DrawAlphabet(width, height, startX, cellWidth, cellHeight, size);
         drawAlphabet.setBounds(0, 0, width, height);
         drawAlphabet.setOpaque(false);
-        layeredPane.add(drawAlphabet, Integer.valueOf(3));  // слой 3
+        layeredPane.add(drawAlphabet, Integer.valueOf(3));
 
         // Кнопка настроек
-        JButton settingsButton = new JButton("⚙️");
-        settingsButton.setFont(new Font("Segoe UI", Font.PLAIN, 30));
-
-        settingsButton.setBorder(null);
-        settingsButton.setContentAreaFilled(false);
-        settingsButton.setFocusPainted(false);
-        settingsButton.setCursor(new Cursor(Cursor.HAND_CURSOR));
-        settingsButton.setBounds(width - 70, 10, 50, 50);
-
-        settingsButton.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseEntered(java.awt.event.MouseEvent evt) {
-                settingsButton.setBackground(new Color(0, 0, 0, 80));
-                settingsButton.setOpaque(true);
-            }
-            public void mouseExited(java.awt.event.MouseEvent evt) {
-                settingsButton.setOpaque(false);
-                settingsButton.setBackground(null);
-            }
-        });
-
+        DrawLogoSettings settingsButton = new DrawLogoSettings(width, height);
         settingsButton.addActionListener(e -> {
-            settingsButton.setBackground(null);
             Settings settings = new Settings(width / 2, height / 2, game);
         });
+        layeredPane.add(settingsButton, Integer.valueOf(4));
 
-        layeredPane.add(settingsButton, Integer.valueOf(4));  // слой 4
+        //кнопка лампочка
+        DrawBulbForButton bulbButton = new DrawBulbForButton(width, height);
+        bulbButton.addActionListener(e -> {
+            if(attemptСlue >= 2){
+                Clue clue = new Clue(width, height);
+                game.requestFocus();
+                game.setFocusable(true);
+                return;
+            }
+            char[] wordLetters = readFromDictionary.getWorldLetter();
+            List<Character> notOpenedLetters = new ArrayList<>();
+    
+    
+            for (int i = 0; i < wordLetters.length; i++) {
+                char letter = wordLetters[i];
+                if (!boolToFinish.boolArray[i]) {
+                    if (!notOpenedLetters.contains(letter)) {
+                        notOpenedLetters.add(letter);
+                    }
+                }
+            }
+    
+    // Если есть неоткрытые буквы - открываем случайную
+        if (!notOpenedLetters.isEmpty()) {
+            Random random = new Random();
+            char randomLetter = notOpenedLetters.get(random.nextInt(notOpenedLetters.size()));
+        
+        
+            List<Integer> positions = findLettersInWord.findLetter(randomLetter);
+            Point pos = drawAlphabet.findLetter(randomLetter);
+            DrawRedLines drawRedLines = new DrawRedLines(pos.x, pos.y, width, height, startX, cellWidth, cellHeight, size);
+            drawRedLines.setBounds(0, 0, width, height);
+            drawRedLines.setOpaque(false);
+            layeredPane.add(drawRedLines, Integer.valueOf(4));
+            layeredPane.repaint();
+        
 
+            DrawLetters drawLetters = new DrawLetters(width, height, wordLetters, randomLetter, positions);
+            drawLetters.setBounds(0, 0, width, height);
+            drawLetters.setOpaque(false);
+            layeredPane.add(drawLetters, Integer.valueOf(5));
+
+            boolToFinish.addToBoolIsFinish(positions);
+
+            if (boolToFinish.isFinish()) {
+                FinishVictory finishVictory = new FinishVictory(width, height);
+                game.dispose();
+            }
+        
+            layeredPane.repaint();
+            }
+            attemptСlue++;
+            game.requestFocus();
+            game.setFocusable(true);
+        });
+        layeredPane.add(bulbButton, Integer.valueOf(4));
 
 
         game.addKeyListener(new KeyAdapter() {
-        @Override
-        public void keyPressed(KeyEvent e) {
-            if(attempt >= 5){
-                FinishLose finishLose = new FinishLose(width, height);
-                game.dispose();
-            }
-            char keyChar = e.getKeyChar();
-            char russianLetter = Character.toUpperCase(keyChar);
-        
-            if ((russianLetter >= 'А' && russianLetter <= 'Я') || russianLetter == 'Ё') {
-                Point pos = drawAlphabet.findLetter(russianLetter);
-                if (pos != null) {
+            @Override
+            public void keyPressed(KeyEvent e) {
+                if(attempt >= 5){
+                    FinishLose finishLose = new FinishLose(width, height);
+                    game.dispose();
+                }
+                char keyChar = e.getKeyChar();
+                char russianLetter = Character.toUpperCase(keyChar);
+            
+                if ((russianLetter >= 'А' && russianLetter <= 'Я') || russianLetter == 'Ё') {
+                    Point pos = drawAlphabet.findLetter(russianLetter);
+                    if (pos != null) {
 
-                    List<Integer> positions = findLettersInWord.findLetter(russianLetter);
+                        List<Integer> positions = findLettersInWord.findLetter(russianLetter);
 
-                    DrawLetters drawLetters = new DrawLetters(width, height, readFromDictionary.getWorldLetter(), russianLetter, positions);
-                    if(positions.isEmpty()) {
-                        attempt++;
+                        DrawLetters drawLetters = new DrawLetters(width, height, readFromDictionary.getWorldLetter(), russianLetter, positions);
+                        if(positions.isEmpty()) {
+                            attempt++;
+                        }
+                        
+                        boolToFinish.addToBoolIsFinish(positions);
+                        
+                        DrawRedLines drawRedLines = new DrawRedLines(pos.x, pos.y, width, height, startX, cellWidth, cellHeight, size);
+                       
+                        drawLetters.setBounds(0, 0, width, height);
+                        drawLetters.setOpaque(false);
+                        layeredPane.add(drawLetters, Integer.valueOf(5));
+
+                        drawRedLines.setBounds(0, 0, width, height);
+                        drawRedLines.setOpaque(false);
+                        layeredPane.add(drawRedLines, Integer.valueOf(4));
+                        layeredPane.repaint();
+
+                        if(boolToFinish.isFinish()){
+                            FinishVictory finishVictory = new FinishVictory(width, height);
+                            game.dispose();
+                        }
                     }
-                    
-                    boolToFinish.addToBoolIsFinish(positions);
-                    
-                    DrawRedLines drawRedLines = new DrawRedLines(pos.x, pos.y, width, height, startX, cellWidth, cellHeight, size);
-                   
-                    drawLetters.setBounds(0, 0, width, height);
-                    drawLetters.setOpaque(false);
-                    layeredPane.add(drawLetters, Integer.valueOf(5));
-
-                    drawRedLines.setBounds(0, 0, width, height);
-                    drawRedLines.setOpaque(false);
-                    layeredPane.add(drawRedLines, Integer.valueOf(4));
-                    layeredPane.repaint();
-
-                    if(boolToFinish.isFinish()){
-                        FinishVictory finishVictory = new FinishVictory(width, height);
-                        game.dispose();
-                    }
-
                 }
             }
-        }
         });
 
         game.setFocusable(true);
         game.requestFocus();
-
         game.setVisible(true);
     }
 }
