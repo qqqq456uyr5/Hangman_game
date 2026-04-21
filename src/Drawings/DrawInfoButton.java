@@ -53,12 +53,12 @@ public class DrawInfoButton extends JButton {
         Color circleColor = isHovering ? new Color(100, 100, 120) : Color.BLACK;
         Color letterColor = isHovering ? new Color(100, 100, 120) : Color.BLACK;
         
-        // Рисуем незалитый круг (только контур) - меньшего размера
+        // Рисуем незалитый круг
         g2d.setColor(circleColor);
         g2d.setStroke(new java.awt.BasicStroke(2f));
         g2d.drawOval(centerX - radius, centerY - radius, radius * 2, radius * 2);
         
-        // Рисуем букву "i" внутри круга (размер остался 24)
+        // Рисуем букву "i"
         g2d.setColor(letterColor);
         g2d.setFont(new Font("Segoe UI", Font.BOLD, 24));  // Шрифт остался 24
         FontMetrics fm = g2d.getFontMetrics();

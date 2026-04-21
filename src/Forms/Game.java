@@ -4,6 +4,7 @@ import Drawings.BackgroundGameForm;
 import Drawings.DrawAlphabet;
 import Drawings.DrawBulbForButton;
 import Drawings.DrawCategory;
+import Drawings.DrawGallowsForGame;
 import Drawings.DrawLetters;
 import Drawings.DrawLinesForLetters;
 import Drawings.DrawLogoSettings;
@@ -23,6 +24,19 @@ public class Game {
     ReadFromDictionary readFromDictionary = new ReadFromDictionary();
     FindLettersInWord findLettersInWord = new FindLettersInWord(readFromDictionary.getWorldLetter());
     BoolToFinish boolToFinish = new BoolToFinish(readFromDictionary.getWorldLetter());
+    
+    private List<Character> usedLetters = new ArrayList<>();
+
+    private boolean isLetterUsed(char letter) {
+        return usedLetters.contains(letter);
+    }
+
+
+    private void addUsedLetter(char letter) {
+        if (!isLetterUsed(letter)) {
+        usedLetters.add(letter);
+        }
+    }
     
 
     private final int width;
@@ -47,6 +61,12 @@ public class Game {
         JLayeredPane layeredPane = new JLayeredPane();
         layeredPane.setPreferredSize(new java.awt.Dimension(width, height));
         game.setContentPane(layeredPane);
+
+        //Виселица
+        DrawGallowsForGame drawGallowsForGame = new DrawGallowsForGame();
+        drawGallowsForGame.setBounds(0, 0, width, height);
+        drawGallowsForGame.setOpaque(false);
+        layeredPane.add(drawGallowsForGame, Integer.valueOf(5));
 
         //Фон
         BackgroundGameForm backgroundPanel = new BackgroundGameForm();
@@ -140,7 +160,7 @@ public class Game {
         game.addKeyListener(new KeyAdapter() {
             @Override
             public void keyPressed(KeyEvent e) {
-                if(attempt >= 5){
+                if(attempt >= 6){
                     FinishLose finishLose = new FinishLose(width, height);
                     game.dispose();
                 }
@@ -151,11 +171,23 @@ public class Game {
                     Point pos = drawAlphabet.findLetter(russianLetter);
                     if (pos != null) {
 
+
+                        if(isLetterUsed(russianLetter)){
+                            return;
+                        }
+                        
+                        addUsedLetter(russianLetter);
+
                         List<Integer> positions = findLettersInWord.findLetter(russianLetter);
 
+                        
                         DrawLetters drawLetters = new DrawLetters(width, height, readFromDictionary.getWorldLetter(), russianLetter, positions);
+
+                       
                         if(positions.isEmpty()) {
                             attempt++;
+                            drawGallowsForGame.newAttempt(attempt);
+                            layeredPane.repaint();
                         }
                         
                         boolToFinish.addToBoolIsFinish(positions);
