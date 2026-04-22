@@ -35,12 +35,12 @@ public class StartMenu {
         logoPanel.setOpaque(true);
         layeredPane.add(logoPanel, Integer.valueOf(0));
 
-        // СЛОЙ 1: Кнопка информации (слева)
+        // СЛОЙ 1: Кнопка информации
         DrawInfoButton infoButton = new DrawInfoButton(width, height);
         infoButton.setBounds(width - 70, 7, 50, 50);
         infoButton.addActionListener(e -> {
             // Действие для кнопки информации
-            System.out.println("Info button clicked");
+            Info info = new Info(width, height);
         });
         layeredPane.add(infoButton, Integer.valueOf(1));
 
