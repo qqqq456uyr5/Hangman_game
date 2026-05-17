@@ -19,6 +19,7 @@ public class Clue {
         clueFrame.setSize(width / 2, height / 2);
         clueFrame.setLocationRelativeTo(null);
         clueFrame.setLayout(null);
+        clueFrame.setResizable(false);
         
         // Надпись о превышении количества подсказок
         JLabel messageLabel = new JLabel("Превышено количество подсказок!", SwingConstants.CENTER);

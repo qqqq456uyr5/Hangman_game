@@ -26,6 +26,7 @@ public class FinishVictory {
         finishVictory.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         finishVictory.setSize(width, height);
         finishVictory.setLocationRelativeTo(null);
+        finishVictory.setResizable(false);
 
         
         //формочка отрисовки

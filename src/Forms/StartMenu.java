@@ -22,29 +22,29 @@ public class StartMenu {
         startmenu.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         startmenu.setSize(width, height);
         startmenu.setLocationRelativeTo(null);
+        startmenu.setResizable(false);
 
-        // Создаём LayeredPane
+        
         JLayeredPane layeredPane = new JLayeredPane();
         layeredPane.setPreferredSize(new Dimension(width, height));
         layeredPane.setLayout(null);
         startmenu.setContentPane(layeredPane);
 
-        // СЛОЙ 0: Фоновый логотип
+        //Фоновый логотип
         StartLogo logoPanel = new StartLogo(width, height);
         logoPanel.setBounds(0, 0, width, height);
         logoPanel.setOpaque(true);
         layeredPane.add(logoPanel, Integer.valueOf(0));
 
-        // СЛОЙ 1: Кнопка информации
+        //Кнопка информации
         DrawInfoButton infoButton = new DrawInfoButton(width, height);
         infoButton.setBounds(width - 70, 7, 50, 50);
         infoButton.addActionListener(e -> {
-            // Действие для кнопки информации
             Info info = new Info(width, height);
         });
         layeredPane.add(infoButton, Integer.valueOf(1));
 
-        // СЛОЙ 2: Панель с кнопками внизу
+        //Панель с кнопками котрая снизу
         JPanel bottomPanel = new JPanel();
         bottomPanel.setOpaque(false);
         bottomPanel.setLayout(new FlowLayout(FlowLayout.CENTER, 100, 0));

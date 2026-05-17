@@ -56,8 +56,9 @@ public class Game {
         game.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         game.setSize(width, height);
         game.setLocationRelativeTo(null);
+        game.setResizable(false);
 
-        // Создаём LayeredPane
+        
         JLayeredPane layeredPane = new JLayeredPane();
         layeredPane.setPreferredSize(new java.awt.Dimension(width, height));
         game.setContentPane(layeredPane);
@@ -121,11 +122,10 @@ public class Game {
                 }
             }
     
-    // Если есть неоткрытые буквы - открываем случайную
+    // Если есть неоткрытые буквы то открываем случайную
         if (!notOpenedLetters.isEmpty()) {
             Random random = new Random();
             char randomLetter = notOpenedLetters.get(random.nextInt(notOpenedLetters.size()));
-        
         
             List<Integer> positions = findLettersInWord.findLetter(randomLetter);
             Point pos = drawAlphabet.findLetter(randomLetter);

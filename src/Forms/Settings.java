@@ -24,6 +24,7 @@ public class Settings {
         settings.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         settings.setSize(width, height);
         settings.setLocationRelativeTo(null);
+        settings.setResizable(false);
         
         //НАЛОЖЕНИЕ
         JLayeredPane layeredPane = new JLayeredPane();

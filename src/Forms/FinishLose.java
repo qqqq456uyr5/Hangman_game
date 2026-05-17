@@ -26,6 +26,7 @@ public class FinishLose {
         finishLose.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         finishLose.setSize(width, height);
         finishLose.setLocationRelativeTo(null);
+        finishLose.setResizable(false);
 
         
         //формочка отрисовки
