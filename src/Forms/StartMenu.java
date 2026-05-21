@@ -30,13 +30,13 @@ public class StartMenu {
         layeredPane.setLayout(null);
         startmenu.setContentPane(layeredPane);
 
-        //Фоновый логотип
+        //Фоновый
         StartLogo logoPanel = new StartLogo(width, height);
         logoPanel.setBounds(0, 0, width, height);
         logoPanel.setOpaque(true);
         layeredPane.add(logoPanel, Integer.valueOf(0));
 
-        //Кнопка информации
+        //информации
         DrawInfoButton infoButton = new DrawInfoButton(width, height);
         infoButton.setBounds(width - 70, 7, 50, 50);
         infoButton.addActionListener(e -> {
@@ -50,7 +50,7 @@ public class StartMenu {
         bottomPanel.setLayout(new FlowLayout(FlowLayout.CENTER, 100, 0));
         bottomPanel.setBounds(0, height - 100, width, 80);
         
-        // Кнопка "ИГРАТЬ"
+        //ИГРАТЬ
         JButton playButton = new JButton("ИГРАТЬ");
         playButton.setBorder(null);
         playButton.setFont(new Font("Arial", Font.BOLD, 26));
@@ -79,7 +79,7 @@ public class StartMenu {
             startmenu.dispose();
         });
 
-        // Кнопка "ВЫЙТИ"
+        //ВЫЙТИ
         JButton exitButton = new JButton("ВЫЙТИ");
         exitButton.setBorder(null);
         exitButton.setFont(new Font("Arial", Font.BOLD, 26));

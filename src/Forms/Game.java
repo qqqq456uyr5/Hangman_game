@@ -59,9 +59,12 @@ public class Game {
         game.setResizable(false);
 
         
+
+        
         JLayeredPane layeredPane = new JLayeredPane();
         layeredPane.setPreferredSize(new java.awt.Dimension(width, height));
         game.setContentPane(layeredPane);
+
 
         //Виселица
         DrawGallowsForGame drawGallowsForGame = new DrawGallowsForGame();
@@ -74,6 +77,7 @@ public class Game {
         backgroundPanel.setBounds(0, 0, width, height);
         backgroundPanel.setOpaque(true);
         layeredPane.add(backgroundPanel, Integer.valueOf(0));
+
 
         //Чёрточки
         DrawLinesForLetters drawLinesForLetters = new DrawLinesForLetters(width, height, readFromDictionary.getWorldLetter());
@@ -122,7 +126,7 @@ public class Game {
                 }
             }
     
-    // Если есть неоткрытые буквы то открываем случайную
+    // открываем случайную
         if (!notOpenedLetters.isEmpty()) {
             Random random = new Random();
             char randomLetter = notOpenedLetters.get(random.nextInt(notOpenedLetters.size()));

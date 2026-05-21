@@ -36,9 +36,9 @@ public class Settings {
         background.setBounds(0, 0, width, height);
         layeredPane.add(background, JLayeredPane.DEFAULT_LAYER);
 
-        //СОЗДАНИЕ КНОПОК
+       
         
-        // Кнопка "ПРОДОЛЖИТЬ"
+        //"ПРОДОЛЖИТЬ"
         JButton continueButton = new JButton("ПРОДОЛЖИТЬ");
         continueButton.setBorder(null);
         continueButton.setFont(new Font("Arial", Font.BOLD, 26));
@@ -69,7 +69,7 @@ public class Settings {
             game.setFocusable(true);
         });
 
-        // Кнопка "ВЫЙТИ В МЕНЮ"
+        //ВЫЙТИ
         JButton menuButton = new JButton("ВЫЙТИ В МЕНЮ");
         menuButton.setBorder(null);
         menuButton.setFont(new Font("Arial", Font.BOLD, 26));
@@ -101,7 +101,7 @@ public class Settings {
             new StartMenu();
         });
 
-        // Кнопка "ВЫХОД"
+        //ВЫХОД
         JButton exitButton = new JButton("ВЫХОД");
         exitButton.setBorder(null);
         exitButton.setFont(new Font("Arial", Font.BOLD, 26));
